@@ -62,7 +62,7 @@ const ProductView = () => {
                 <h6 className="card-title fw-bold">{p.product_name}</h6>
                 <p className="text-muted small mb-1">{p.description}</p>
                 <p className="fw-semibold">₱{p.price}</p>
-                <p className="text-muted small">Stock: {p.stock?.quantity}</p>
+                <p className="text-muted small">Stock: {p.stocks?.quantity}</p>
               </div>
 
               {/* Actions */}
