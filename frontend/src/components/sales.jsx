@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 
 export default function Sales() {
   const [products, setProducts] = useState([]);
-  const [error, setError] = useState("");
+  const [setError] = useState("");
   const days = [
     "Monday",
     "Tuesday",
@@ -60,9 +60,9 @@ export default function Sales() {
                 <th>Category</th>
               </tr>
             </thead>
-            {products.map((product) => (
-              <tbody>
-                <tr>
+            <tbody>
+              {products.map((product) => (
+                <tr key={product.id}>
                   <td>{product.id}</td>
                   <td>{product.product_name}</td>
                   <td>{product.price}</td>
@@ -70,8 +70,8 @@ export default function Sales() {
                   <td>{product.expiration_date}</td>
                   <td>{product.category_id}</td>
                 </tr>
-              </tbody>
-            ))}
+              ))}
+            </tbody>
           </table>
         </div>
       </div>
