@@ -4,29 +4,57 @@ const ProductView = () => {
   const [products, setProducts] = useState([]);
   const [error, setError] = useState("");
 
-  useEffect(() => {
-    const fetchProducts = async () => {
-      const authToken = localStorage.getItem("authToken");
+  // Function to fetch products
+  const fetchProducts = async () => {
+    const authToken = localStorage.getItem("authToken");
 
-      try {
-        const response = await fetch("http://127.0.0.1:8000/api/products", {
-          method: "GET",
+    try {
+      const response = await fetch("http://127.0.0.1:8000/api/products", {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${authToken}`,
+        },
+      });
+      if (!response.ok) {
+        throw new Error("Failed to fetch products");
+      }
+      const data = await response.json();
+      setProducts(data.products);
+    } catch (err) {
+      setError(err.message);
+    }
+  };
+
+  // useEffect to call fetchProducts when the component mounts
+  useEffect(() => {
+    fetchProducts();
+  }, []);
+
+  const deleteProduct = async (productId) => {
+    const authToken = localStorage.getItem("authToken");
+
+    try {
+      const response = await fetch(
+        `http://127.0.0.1:8000/api/products/${productId}`,
+        {
+          method: "DELETE",
           headers: {
             Authorization: `Bearer ${authToken}`,
           },
-        });
-        if (!response.ok) {
-          throw new Error("Failed to fetch products");
         }
-        const data = await response.json();
-        setProducts(data.products);
-      } catch (err) {
-        setError(err.message);
-      }
-    };
+      );
 
-    fetchProducts();
-  }, []);
+      if (!response.ok) {
+        throw new Error("Failed to delete product");
+      }
+
+      setProducts((currentProducts) =>
+        currentProducts.filter((product) => product.id !== productId)
+      );
+    } catch (err) {
+      setError(err.message);
+    }
+  };
 
   return (
     <div className="container py-4 bg-white overflow-auto">
@@ -73,7 +101,12 @@ const ProductView = () => {
                 <button className="btn btn-sm btn-outline-secondary">
                   Edit Item
                 </button>
-                <button className="btn btn-sm btn-outline-danger">♥</button>
+                <button
+                  className="btn btn-sm btn-outline-danger"
+                  onClick={() => deleteProduct(p.id)}
+                >
+                  Delete
+                </button>
               </div>
             </div>
           </div>
