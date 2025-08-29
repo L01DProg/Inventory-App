@@ -9,6 +9,7 @@ import Sales from "./components/sales";
 import ShopView from "./components/shopping";
 import ProductView from "./components/shopping";
 
+
 function App() {
   return (
     <>

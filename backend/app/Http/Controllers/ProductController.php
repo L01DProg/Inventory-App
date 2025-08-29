@@ -48,7 +48,7 @@ class ProductController extends Controller
             'description' => 'nullable|string',
             'price' => 'required|numeric|min:0',
             'quantity' => 'required|integer|min:0',
-            'expiration_date' => 'required',
+            'expiration_date' => 'required|date',
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg,webp|max:2048',
         ]);
 
@@ -146,6 +146,25 @@ class ProductController extends Controller
 
         return response()->json([
             'message' => 'Deleted Successfully'
+        ]);
+    }
+
+    public function searchProduct(Request $request)
+    {
+        $query = $request->input('query');
+
+        $product = collect();
+
+        if ($query) {
+            $product = Product::where('product_name', 'LIKE', "%{$query}%")
+                ->orWhere('description', 'LIKE', "%{$query}%")
+                ->orderBy('product_name')
+                ->get();
+        }
+
+        return response()->json([
+            'products' => $product,
+            'query' => $query
         ]);
     }
 }

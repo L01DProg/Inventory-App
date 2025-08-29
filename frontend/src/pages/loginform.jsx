@@ -58,7 +58,10 @@ export default function Login() {
             <div className="card-body p-4">
               <div className="text-center mb-4">
                 <img src={logo} alt="" className="img-fluid w-25" />
-                <h2 className="card-title text-uppercase fw-bold" style={{color:"darkblue"}}>
+                <h2
+                  className="card-title text-uppercase fw-bold"
+                  style={{ color: "darkblue" }}
+                >
                   ADMIN
                 </h2>
               </div>
@@ -73,13 +76,10 @@ export default function Login() {
                     {message}
                   </div>
                 )}
-                <div className="mb-3">
-                  <label
-                    htmlFor="username"
-                    className="form-label visually-hidden"
-                  >
-                    Username
-                  </label>
+                <div className="mb-3 input-group">
+                  <span className="input-group-text">
+                    <i className="fa fa-user"></i>
+                  </span>
                   <input
                     type="text"
                     id="username"
@@ -89,13 +89,11 @@ export default function Login() {
                     onChange={(e) => setUsername(e.target.value)}
                   />
                 </div>
-                <div className="mb-3">
-                  <label
-                    htmlFor="password"
-                    className="form-label visually-hidden"
-                  >
-                    Password
-                  </label>
+
+                <div className="mb-3 input-group">
+                  <span className="input-group-text">
+                    <i className="fa fa-lock"></i>
+                  </span>
                   <input
                     type="password"
                     id="password"
@@ -105,8 +103,13 @@ export default function Login() {
                     onChange={(e) => setPassword(e.target.value)}
                   />
                 </div>
+
                 <div className="d-grid gap-2">
-                  <button type="submit" className="btn btn-lg text-white" style={{background:"darkblue"}}>
+                  <button
+                    type="submit"
+                    className="btn btn-lg text-white"
+                    style={{ background: "darkblue" }}
+                  >
                     Login
                   </button>
                 </div>
@@ -116,7 +119,10 @@ export default function Login() {
                   </Link>
                 </div>
                 <div className="d-grid gap-2">
-                  <button className="btn btn-lg text-white" style={{background:"darkblue"}}>
+                  <button
+                    className="btn btn-lg text-white"
+                    style={{ background: "darkblue" }}
+                  >
                     <Link
                       to="/register"
                       className="text-decoration-none text-white"

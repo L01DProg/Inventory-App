@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('product_name');
             $table->text('description')->nullable();
             $table->float('price');
-            $table->string('expiration_date');
+            $table->date('expiration_date');
             $table->string('image')->nullable();
             $table->timestamps();
         });

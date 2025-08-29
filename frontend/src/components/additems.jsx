@@ -138,7 +138,7 @@ const AddItems = () => {
             />
 
             <input
-              type="text"
+              type="date"
               id="expiration_date"
               value={expiration_date}
               onChange={(e) => setExpiration(e.target.value)}
