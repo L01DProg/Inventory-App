@@ -10,12 +10,13 @@ const AddItems = () => {
   const [expiration_date, setExpiration] = useState("");
   const [image, setImage] = useState(null);
   const [error, setError] = useState("");
-  const [message, setMessage] = useState("");
+  const [isVisible, setIsVisible] = useState(false);
 
   const navigate = useNavigate();
 
   useEffect(() => {
-    setMessage("");
+    
+    setError("");
     const authToken = localStorage.getItem("authToken");
 
     if (!authToken) {
@@ -27,7 +28,6 @@ const AddItems = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
-    setMessage("");
 
     const formData = new FormData();
     formData.append("product_name", product_name);
@@ -52,7 +52,7 @@ const AddItems = () => {
       });
 
       if (response.ok) {
-        setMessage("Successfully added product!");
+        setIsVisible(true);
         setProductName("");
         setCategory("");
         setDescription("");
@@ -78,6 +78,31 @@ const AddItems = () => {
 
   return (
     <>
+      {isVisible && (
+        <div
+          className="modal fade show"
+          style={{ display: "block" }}
+          tabIndex="-1"
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby="successTitle"
+          aria-hidden={!isVisible}
+        >
+          <div className="modal-dialog modal-dialog-centered">
+            <div className="modal-content">
+              <div className="modal-header border-0 pb-0 justify-content-center">
+                <h5 className="modal-title fs-4 fw-bold text-success" id="successTitle">
+                  Success!
+                </h5>
+              </div>
+              <div className="modal-body text-center pt-2">
+                <p id="successDesc">Item added successfully.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
       <div
         className="container p-5 d-flex flex-column"
         style={{ backgroundColor: "white", height: "95vh" }}
@@ -161,7 +186,6 @@ const AddItems = () => {
             />
           </div>
 
-          {message && <div className="alert alert-success mt-3">{message}</div>}
           {error && <div className="alert alert-danger mt-3">{error}</div>}
 
           <button type="submit" className="btn btn-primary w-100">

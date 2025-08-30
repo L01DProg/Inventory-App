@@ -6,6 +6,7 @@ const Dashboard = () => {
   const navigate = useNavigate();
   const [message, setMessage] = useState("");
   const [error, setError] = useState("");
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     setMessage("");
@@ -15,6 +16,8 @@ const Dashboard = () => {
       console.warn("No authentication. Redirecting to login.");
       navigate("/");
     }
+
+    setIsLoading(false);
   }, [navigate]);
 
   const handleSignOut = async () => {
@@ -52,6 +55,11 @@ const Dashboard = () => {
 
   return (
     <div className="d-flex flex-row">
+      {isLoading && (
+        <div className="flex justify-center items-center py-5 text-lg text-blue-500">
+          <h4 className="text-center">Loading....</h4>
+        </div>
+      )}
       <div
         className="card w-25 d-flex flex-column p-3"
         style={{ height: "100vh", gap: "1rem" }}

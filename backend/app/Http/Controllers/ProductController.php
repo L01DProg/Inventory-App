@@ -91,7 +91,7 @@ class ProductController extends Controller
      */
     public function show(Product $product)
     {
-        $product->load(['category', 'stock']);
+        $product->load(['categories', 'stocks']);
         $product->image_url = $product->image ? asset('storage/' . $product->image) : null;
 
         return response()->json($product);
