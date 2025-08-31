@@ -137,7 +137,6 @@ const AddItems = () => {
               value={description}
               onChange={(e) => setDescription(e.target.value)}
               className="w-100 form-control text-center"
-              required
             />
           </div>
 

@@ -102,7 +102,7 @@ const Dashboard = () => {
           Sales
         </Link>
         <Link
-          to="profile"
+          to="/profile"
           className="d-flex align-items-center fw-semibold text-decoration-none text-dark fs-5"
         >
           <i className="fa fa-user me-2" style={{ fontSize: "24px" }} />

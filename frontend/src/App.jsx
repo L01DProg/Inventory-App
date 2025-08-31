@@ -8,6 +8,7 @@ import AddItems from "./components/additems";
 import Sales from "./components/sales";
 import ShopView from "./components/shopping";
 import ProductView from "./components/shopping";
+import Profile from "./pages/Profile";
 
 
 function App() {
@@ -24,6 +25,9 @@ function App() {
             <Route path="add-item" element={<AddItems />} />
             <Route path="sales" element={<Sales />} />
             <Route path="shopping" element={<ProductView />} />
+          </Route>
+          <Route path="/profile" element={<Profile/>}>
+              <Route index />
           </Route>
         </Routes>
       </div>
