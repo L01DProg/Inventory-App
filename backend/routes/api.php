@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\MailController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\UserController;
@@ -18,4 +19,5 @@ Route::middleware('auth:sanctum')->group( function () {
     Route::post('/purchase',[OrderController::class, 'purchaseProducts']);
     Route::get('/orders/{id}',[OrderController::class, 'customerOrders']);
     Route::get('/search-product',[ProductController::class, 'searchProduct']);
+    Route::get('/user-profile/',[UserController::class, 'index']);
 });

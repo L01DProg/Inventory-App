@@ -1,15 +1,13 @@
 import { useEffect, useState } from "react";
 import { Link, Outlet, useNavigate } from "react-router-dom";
-import { App } from "antd";
 
 const Dashboard = () => {
   const navigate = useNavigate();
-  const [message, setMessage] = useState("");
   const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    setMessage("");
+    setError("");
     const authToken = localStorage.getItem("authToken");
 
     if (!authToken) {
@@ -19,39 +17,6 @@ const Dashboard = () => {
 
     setIsLoading(false);
   }, [navigate]);
-
-  const handleSignOut = async () => {
-    try {
-      const authToken = localStorage.getItem("authToken");
-      if (!authToken) {
-        setError("No authentication token found.");
-        navigate("/");
-        return;
-      }
-
-      const response = await fetch("http://127.0.0.1:8000/api/logout", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Accept: "application/json",
-          Authorization: `Bearer ${authToken}`, // Corrected syntax
-        },
-      });
-
-      if (response.ok) {
-        localStorage.removeItem("authToken");
-        localStorage.removeItem("username");
-        message.success("You have been successfully logged out."); // Use Antd's message
-        navigate("/");
-      } else {
-        const errorData = await response.json();
-        setError(errorData.message || "Logout failed.");
-      }
-    } catch (err) {
-      console.error("Logout error:", err);
-      setError("Failed to connect to the server for logout. Please try again.");
-    }
-  };
 
   return (
     <div className="d-flex flex-row">
@@ -108,15 +73,6 @@ const Dashboard = () => {
           <i className="fa fa-user me-2" style={{ fontSize: "24px" }} />
           Profile
         </Link>
-
-        <button
-          onClick={handleSignOut}
-          className="btn btn-link d-flex align-items-center fw-semibold text-decoration-none text-dark fs-5 p-0"
-          style={{ textAlign: "left" }}
-        >
-          <i className="fa fa-power-off text-danger me-2" />
-          Sign Out
-        </button>
 
         {error && <div className="text-danger mt-2">{error}</div>}
       </div>

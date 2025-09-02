@@ -65,4 +65,18 @@ class UserController extends Controller
         ]);
     }
 
+    public function index()
+    {
+        $userProfile = User::find(1);
+
+        if (!$userProfile) {
+            return response()->json([
+                'error' => 'User not found',
+            ], 404);
+        }
+
+        return response()->json([
+            'user' => $userProfile,
+        ]);
+    }
 }
