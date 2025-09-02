@@ -1,29 +1,29 @@
 import { useEffect, useState } from "react";
-import { Outlet } from "react-router-dom";
+import { Link, Outlet } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
+import userProfile from "../assets/userprofile.png";
+
 const Profile = () => {
   const [user, setUser] = useState(null);
   const [error, setError] = useState(null);
-  
 
   const navigate = useNavigate();
 
   useEffect(() => {
     const fetchUser = async () => {
-      const authToken = localStorage.getItem('authToken');
-      
+      const authToken = localStorage.getItem("authToken");
+
       if (!authToken) {
         setError("Authentication token or user ID not found.");
         return;
       }
 
       try {
-        // Update the URL to include the user ID
         const response = await fetch(`http://127.0.0.1:8000/api/user-profile`, {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
-            Authorization: `Bearer ${authToken}`
+            Authorization: `Bearer ${authToken}`,
           },
         });
 
@@ -46,7 +46,6 @@ const Profile = () => {
   if (!user) {
     return <div>Loading...</div>;
   }
-
 
   const handleSignOut = async () => {
     try {
@@ -80,22 +79,31 @@ const Profile = () => {
     }
   };
 
+  const handleNotification = () => {
+    navigate("notification");
+  };
+
   return (
     <div className="d-flex flex-row gap-5">
       <div
         className="d-flex flex-column justify-content-between p-3"
         style={{ height: "80vh", backgroundColor: "#F3F2EC" }}
       >
-        <div>
-          <img src="" alt="" />
+        <div className="d-flex flex-column">
+          <img
+            src={userProfile}
+            alt=""
+            style={{ height: "50px", width: "50px", borderRadius: "20px" }}
+          />
           <p className="fw-semibold">{user.username}</p>
           <p>{user.email}</p>
         </div>
 
-       
-
         <div className="d-flex flex-column gap-4">
-          <button className="btn d-flex align-items-center profile-button">
+          <button
+            className="btn d-flex align-items-center profile-button"
+            onClick={handleNotification}
+          >
             <i className="fa-solid fa-bell text-black me-2"></i>
             Notification
           </button>
@@ -110,7 +118,7 @@ const Profile = () => {
           </div>
         </div>
       </div>
-      <div className="item">
+      <div className="flex-grow-1 p-3 overflow-auto">
         <Outlet />
       </div>
     </div>

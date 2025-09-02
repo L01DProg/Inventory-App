@@ -9,7 +9,7 @@ import Sales from "./components/sales";
 import ShopView from "./components/shopping";
 import ProductView from "./components/shopping";
 import Profile from "./pages/Profile";
-
+import Notification from "./components/notification";
 
 function App() {
   return (
@@ -26,8 +26,8 @@ function App() {
             <Route path="sales" element={<Sales />} />
             <Route path="shopping" element={<ProductView />} />
           </Route>
-          <Route path="/profile" element={<Profile/>}>
-              <Route index />
+          <Route path="/profile" element={<Profile />}>
+            <Route path="notification" element={<Notification />} />
           </Route>
         </Routes>
       </div>
