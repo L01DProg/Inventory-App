@@ -58,12 +58,20 @@ const Reports = () => {
         </button>
       </div>
       {error && <div className="text-danger">{error}</div>}
-      <div className="d-flex flex-row p-2">
+      <div className="d-flex flex-row p-2 gap-5">
         <div className="card p-2 shadow-lg" style={{ border: "none" }}>
           <h5>Total Sales</h5>
           <p className="text-center fw-semibold">
             <i className="fa fa-peso-sign"></i>
             {totalSales || "Loading..."}
+          </p>
+        </div>
+
+        <div className="card p-2 shadow-lg" style={{border:"none"}} >
+          <h5>Total Revenue</h5>
+          <p className="text-center fw-semibold">
+            <i className="fa fa-peso-sign"></i>
+            120
           </p>
         </div>
       </div>

@@ -11,7 +11,7 @@ const ProductView = () => {
   const [quantities, setQuantities] = useState({});
 
   const navigate = useNavigate();
-  
+
   // Fetch products
   const fetchProducts = async () => {
     const authToken = localStorage.getItem("authToken");
@@ -54,7 +54,9 @@ const ProductView = () => {
       setIsSearching(true);
       setError("");
       const response = await fetch(
-        `http://127.0.0.1:8000/api/search-product?query=${encodeURIComponent(term)}`,
+        `http://127.0.0.1:8000/api/search-product?query=${encodeURIComponent(
+          term
+        )}`,
         {
           method: "GET",
           headers: {
@@ -152,19 +154,16 @@ const ProductView = () => {
         const errorData = await response.json();
         throw new Error(errorData.message || "Failed to purchase product.");
       }
-      
+
       console.log("Purchase successful!");
       setIsSuccess(true);
       setError("");
 
-      
       setTimeout(() => {
         setIsSuccess(false);
-      }, 3000); 
-      
-    
-      setQuantities(prev => ({...prev, [productId]: ''}));
-      
+      }, 3000);
+
+      setQuantities((prev) => ({ ...prev, [productId]: "" }));
     } catch (err) {
       console.error(err);
       setError(err.message);
@@ -172,7 +171,7 @@ const ProductView = () => {
   };
 
   const handleQuantityChange = (productId, value) => {
-    setQuantities(prev => ({ ...prev, [productId]: value }));
+    setQuantities((prev) => ({ ...prev, [productId]: value }));
   };
 
   return (
@@ -191,7 +190,10 @@ const ProductView = () => {
           <div className="modal-dialog modal-dialog-centered">
             <div className="modal-content">
               <div className="modal-header border-0 pb-0 justify-content-center">
-                <h5 className="modal-title fs-4 fw-bold text-success" id="successTitle">
+                <h5
+                  className="modal-title fs-4 fw-bold text-success"
+                  id="successTitle"
+                >
                   Success!
                 </h5>
               </div>
@@ -267,7 +269,7 @@ const ProductView = () => {
                   id={`quantity-${p.id}`}
                   className="text-center rounded-5"
                   style={{ width: "100px" }}
-                  value={quantities[p.id] || ''}
+                  value={quantities[p.id] || ""}
                   onChange={(e) => handleQuantityChange(p.id, e.target.value)}
                 />
                 <button

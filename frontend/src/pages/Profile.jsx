@@ -92,7 +92,7 @@ const Profile = () => {
     <div className="d-flex flex-row gap-5">
       <div
         className="d-flex flex-column justify-content-between p-3"
-        style={{ height: "80vh", backgroundColor: "#F3F2EC" }}
+        style={{ height: "82vh", backgroundColor: "#F3F2EC" }}
       >
         <div className="d-flex flex-column">
           <img
