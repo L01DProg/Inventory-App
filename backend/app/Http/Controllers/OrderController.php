@@ -97,4 +97,13 @@ class OrderController extends Controller
 
         return $user;
     }
+
+    public function totalSales() {
+        $totalSales = DB::table('orders')
+        ->sum('total_price');
+
+        return response()->json([
+            'total_sales' => $totalSales,
+        ]);
+    }
 }

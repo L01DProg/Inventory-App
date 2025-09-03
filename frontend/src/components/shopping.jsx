@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const ProductView = () => {
   const [products, setProducts] = useState([]);
@@ -6,13 +7,23 @@ const ProductView = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
   const [isSearching, setIsSearching] = useState(false);
+  const [isSuccess, setIsSuccess] = useState(false);
+  const [quantities, setQuantities] = useState({});
 
+  const navigate = useNavigate();
+  
+  // Fetch products
   const fetchProducts = async () => {
     const authToken = localStorage.getItem("authToken");
 
+    if (!authToken) {
+      console.error("Invalid Unauthorized, please log in");
+      navigate("/");
+      return;
+    }
+
     try {
       setIsLoading(true);
-
       const response = await fetch("http://127.0.0.1:8000/api/products", {
         method: "GET",
         headers: {
@@ -31,6 +42,7 @@ const ProductView = () => {
     }
   };
 
+  // Search Logic
   const searchProducts = async (term) => {
     const authToken = localStorage.getItem("authToken");
     if (!term.trim()) {
@@ -41,11 +53,8 @@ const ProductView = () => {
     try {
       setIsSearching(true);
       setError("");
-
       const response = await fetch(
-        `http://127.0.0.1:8000/api/search-product?query=${encodeURIComponent(
-          term
-        )}`,
+        `http://127.0.0.1:8000/api/search-product?query=${encodeURIComponent(term)}`,
         {
           method: "GET",
           headers: {
@@ -82,6 +91,7 @@ const ProductView = () => {
     }
   };
 
+  // Delete products Logic
   const deleteProduct = async (productId) => {
     const authToken = localStorage.getItem("authToken");
 
@@ -108,10 +118,91 @@ const ProductView = () => {
     }
   };
 
+  // Buy Product Logic
+  const buyProduct = async (productId) => {
+    const authToken = localStorage.getItem("authToken");
+    const quantity = quantities[productId] || 0;
+
+    if (!authToken) {
+      setError("Invalid to purchase products. Authentication token missing.");
+      navigate("/");
+      return;
+    }
+
+    if (!quantity || quantity <= 0) {
+      setError("Please enter a valid quantity greater than zero.");
+      return;
+    }
+
+    try {
+      const cartItems = [{ product_id: productId, quantity: Number(quantity) }];
+
+      const response = await fetch("http://127.0.0.1:8000/api/purchase", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${authToken}`,
+        },
+        body: JSON.stringify({
+          cart_items: cartItems,
+        }),
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.message || "Failed to purchase product.");
+      }
+      
+      console.log("Purchase successful!");
+      setIsSuccess(true);
+      setError("");
+
+      
+      setTimeout(() => {
+        setIsSuccess(false);
+      }, 3000); 
+      
+    
+      setQuantities(prev => ({...prev, [productId]: ''}));
+      
+    } catch (err) {
+      console.error(err);
+      setError(err.message);
+    }
+  };
+
+  const handleQuantityChange = (productId, value) => {
+    setQuantities(prev => ({ ...prev, [productId]: value }));
+  };
+
   return (
     <div className="container py-4 bg-white overflow-auto">
+      {/* Moved the success modal inside the main container to fix the JSX structure */}
+      {isSuccess && (
+        <div
+          className="modal fade show"
+          style={{ display: "block" }}
+          tabIndex="-1"
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby="successTitle"
+          aria-hidden={!isSuccess}
+        >
+          <div className="modal-dialog modal-dialog-centered">
+            <div className="modal-content">
+              <div className="modal-header border-0 pb-0 justify-content-center">
+                <h5 className="modal-title fs-4 fw-bold text-success" id="successTitle">
+                  Success!
+                </h5>
+              </div>
+              <div className="modal-body text-center pt-2">
+                <p id="successDesc">Purchase product Successfully.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
       <h2 className="mb-4 text-center">Products</h2>
-
       <div className="mb-4" style={{ width: "500px" }}>
         <input
           type="text"
@@ -170,11 +261,20 @@ const ProductView = () => {
               </div>
 
               <div className="card-footer d-flex justify-content-between align-items-center bg-white">
-                <button className="btn btn-sm btn-outline-primary">
-                  + Add
-                </button>
-                <button className="btn btn-sm btn-outline-secondary">
-                  Edit Item
+                <input
+                  type="number"
+                  placeholder="Quantity"
+                  id={`quantity-${p.id}`}
+                  className="text-center rounded-5"
+                  style={{ width: "100px" }}
+                  value={quantities[p.id] || ''}
+                  onChange={(e) => handleQuantityChange(p.id, e.target.value)}
+                />
+                <button
+                  className="btn btn-sm btn-outline-primary"
+                  onClick={() => buyProduct(p.id)}
+                >
+                  Buy
                 </button>
                 <button
                   className="btn btn-sm btn-outline-danger"

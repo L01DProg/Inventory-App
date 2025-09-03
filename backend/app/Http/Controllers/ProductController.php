@@ -167,4 +167,5 @@ class ProductController extends Controller
             'query' => $query
         ]);
     }
+
 }

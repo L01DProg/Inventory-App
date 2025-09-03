@@ -15,6 +15,7 @@ const Profile = () => {
 
       if (!authToken) {
         setError("Authentication token or user ID not found.");
+        navigate('/');
         return;
       }
 
@@ -83,6 +84,10 @@ const Profile = () => {
     navigate("notification");
   };
 
+  const handleReport = () => {
+    navigate('total-sales');
+  }
+
   return (
     <div className="d-flex flex-row gap-5">
       <div
@@ -103,7 +108,7 @@ const Profile = () => {
             <button className="btn d-flex align-items-center profile-button"><i className="fa fa-check-circle"></i>Status</button>
           </div>
           <div className="d-flex">
-            <button className="btn d-flex align-items-center profile-button">
+            <button className="btn d-flex align-items-center profile-button" onClick={handleReport}>
               <i className="fa fa-file-alt"></i>Reports
             </button>
           </div>

@@ -6,10 +6,10 @@ import Header from "./components/header";
 import Home from "./components/home";
 import AddItems from "./components/additems";
 import Sales from "./components/sales";
-import ShopView from "./components/shopping";
 import ProductView from "./components/shopping";
 import Profile from "./pages/Profile";
 import Notification from "./components/notification";
+import Reports from "./components/Report";
 
 function App() {
   return (
@@ -27,6 +27,7 @@ function App() {
             <Route path="shopping" element={<ProductView />} />
           </Route>
           <Route path="/profile" element={<Profile />}>
+            <Route path="total-sales" element={<Reports />} />
             <Route path="notification" element={<Notification />} />
           </Route>
         </Routes>

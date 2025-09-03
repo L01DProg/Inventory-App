@@ -20,4 +20,5 @@ Route::middleware('auth:sanctum')->group( function () {
     Route::get('/orders/{id}',[OrderController::class, 'customerOrders']);
     Route::get('/search-product',[ProductController::class, 'searchProduct']);
     Route::get('/user-profile/',[UserController::class, 'index']);
+    Route::get('/total-sales',[OrderController::class, 'totalSales']);
 });
