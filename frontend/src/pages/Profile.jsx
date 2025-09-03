@@ -96,10 +96,17 @@ const Profile = () => {
             style={{ height: "50px", width: "50px", borderRadius: "20px" }}
           />
           <p className="fw-semibold">{user.username}</p>
-          <p>{user.email}</p>
         </div>
 
-        <div className="d-flex flex-column gap-4">
+        <div className="d-flex flex-column gap-2">
+          <div>
+            <button className="btn d-flex align-items-center profile-button"><i className="fa fa-check-circle"></i>Status</button>
+          </div>
+          <div className="d-flex">
+            <button className="btn d-flex align-items-center profile-button">
+              <i className="fa fa-file-alt"></i>Reports
+            </button>
+          </div>
           <button
             className="btn d-flex align-items-center profile-button"
             onClick={handleNotification}
