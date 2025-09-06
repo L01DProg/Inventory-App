@@ -110,16 +110,20 @@ class OrderController extends Controller
         ]);
     }
 
-    // public function totalRevenue($productId)
-    // {
-    //     $cost = Product::with('')
-    // }
+    public function totalRevenue()
+    {
+        $totalSales = DB::table('orders')->sum('total_price');
 
-    public function testing() {
-    $total_quantity = DB::table('order_items')->sum('quantity');
+        $totalCostOfSold = DB::table('order_items')
+            ->join('products', 'order_items.product_id', '=', 'products.id')
+            ->sum(DB::raw('order_items.quantity * products.cost'));
 
-    return response()->json([
-        'total' => $total_quantity
-    ]);
-}
+        $revenue = $totalSales - $totalCostOfSold;
+
+        return response()->json([
+            'revenue' => $revenue
+        ]);
+    }
+
+    
 }

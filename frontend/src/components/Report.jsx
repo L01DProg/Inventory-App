@@ -100,7 +100,7 @@ const Reports = () => {
         <div className="card p-2 shadow-lg" style={{ border: "none" }}>
           <h5>Total Revenue</h5>
           <p className="text-center fw-semibold">
-            <i className="fa fa-peso-sign"></i>{totalRevenue || ""}
+            <i className="fa fa-peso-sign"></i>{totalRevenue || "0"}
           </p>
         </div>
       </div>

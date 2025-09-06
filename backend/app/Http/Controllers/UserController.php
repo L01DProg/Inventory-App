@@ -23,8 +23,8 @@ class UserController extends Controller
         ]);
 
         $imagePath = null;
-        if($request->hasFile('image')){
-            $imagePath = $request->file('image')->store('images','public');
+        if ($request->hasFile('image')) {
+            $imagePath = $request->file('image')->store('images', 'public');
         }
 
         $validatedData['password'] = Hash::make($validatedData['password']);
@@ -83,6 +83,30 @@ class UserController extends Controller
 
         return response()->json([
             'user' => $userProfile,
+        ]);
+    }
+
+    public function updateProfile(Request $request, User $user)
+    {
+        $updateData = $request->validate([
+            'username' => 'required',
+            'email' => 'required|email',
+            'password' => 'required',
+            'role' => 'required',
+            'image' => 'nullable|image|mimes:png,jpeg,gif,svg,webp|max:2048'
+        ]);
+
+        if ($request->hasFile('image')) {
+            $imagePath = $request->file('image')->store('images', 'public');
+        } else {
+            $imagePath = $user->image;
+        }
+
+        $user->update($updateData);
+
+        return response()->json([
+            'message' => 'Successfully Update Profile',
+            'User' => $user
         ]);
     }
 }
