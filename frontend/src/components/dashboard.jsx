@@ -26,8 +26,8 @@ const Dashboard = () => {
         </div>
       )}
       <div
-        className="card w-25 d-flex flex-column p-3"
-        style={{ height: "100vh", gap: "1rem" }}
+        className="card  d-flex flex-column p-3"
+        style={{ height: "82vh", gap: "1rem" }}
       >
         <Link
           to="home"

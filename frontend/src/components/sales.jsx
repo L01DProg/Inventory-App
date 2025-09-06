@@ -55,6 +55,7 @@ export default function Sales() {
                 <th>Product ID</th>
                 <th>Product Name</th>
                 <th>Price</th>
+                <th>Cost</th>
                 <th>Quantity</th>
                 <th>Expiration Date</th>
                 <th>Category</th>
@@ -66,6 +67,7 @@ export default function Sales() {
                   <td>{product.id}</td>
                   <td>{product.product_name}</td>
                   <td>{product.price}</td>
+                  <td>{product.cost}</td>
                   <td>{product.stocks?.quantity}</td>
                   <td>{product.expiration_date}</td>
                   <td>{product.category_id}</td>

@@ -47,6 +47,7 @@ class ProductController extends Controller
             'category_name' => 'required|string|max:255',
             'description' => 'nullable|string',
             'price' => 'required|numeric|min:0',
+            'cost' => 'required|numeric',
             'quantity' => 'required|integer|min:0',
             'expiration_date' => 'required|date',
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg,webp|max:2048',
@@ -67,6 +68,7 @@ class ProductController extends Controller
             'description' => $validatedData['description'],
             'category_name' => $validatedData['category_name'],
             'price' => $validatedData['price'],
+            'cost' => $validatedData['cost'],
             'expiration_date' => $validatedData['expiration_date'],
             'category_id' => $category->id,
             'image' => $imagePath,
@@ -107,6 +109,7 @@ class ProductController extends Controller
             'category_name' => 'required|string|max:255',
             'description' => 'nullable|string',
             'price' => 'required|numeric|min:0',
+            'cost' => 'required|numeric',
             'quantity' => 'required|integer|min:0',
             'expiration_date' => 'required',
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048'

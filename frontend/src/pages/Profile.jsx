@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link, Outlet } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
-import userProfile from "../assets/userprofile.png";
+
 
 const Profile = () => {
   const [user, setUser] = useState(null);
@@ -96,11 +96,12 @@ const Profile = () => {
       >
         <div className="d-flex flex-column">
           <img
-            src={userProfile}
+            src={user.image}
             alt=""
             style={{ height: "50px", width: "50px", borderRadius: "20px" }}
           />
           <p className="fw-semibold">{user.username}</p>
+          <p className="fw-bold">{user.role}</p>
         </div>
 
         <div className="d-flex flex-column gap-2">

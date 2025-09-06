@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Order;
+use App\Models\Order_item;
 use App\Models\Product;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -15,28 +16,28 @@ class OrderController extends Controller
     public function purchaseProducts(Request $request)
     {
         try {
-            
+
             $validatedData = $request->validate([
                 'cart_items' => 'required|array|min:1',
                 'cart_items.*.product_id' => 'required|uuid|exists:products,id',
                 'cart_items.*.quantity' => 'required|integer|min:1',
             ]);
 
-            
+
             $user = $request->user();
 
-           
+
             DB::beginTransaction();
 
             $totalPrice = 0;
             $orderItems = [];
 
-           
+
             foreach ($validatedData['cart_items'] as $item) {
                 $product = Product::with('stocks')->findOrFail($item['product_id']);
                 $quantity = $item['quantity'];
 
-                
+
                 if ($product->stocks->quantity < $quantity) {
                     DB::rollBack();
                     return response()->json([
@@ -44,7 +45,7 @@ class OrderController extends Controller
                     ], Response::HTTP_BAD_REQUEST);
                 }
 
-               
+
                 $totalPrice += $product->price * $quantity;
                 $orderItems[] = [
                     'product_id' => $product->id,
@@ -54,20 +55,20 @@ class OrderController extends Controller
                     'updated_at' => now(),
                 ];
 
-                
+
                 $product->stocks->decrement('quantity', $quantity);
             }
 
-           
+
             $order = Order::create([
                 'user_id' => $user->id,
                 'total_price' => $totalPrice,
             ]);
 
-            
+
             $order->orderItems()->createMany($orderItems);
 
-           
+
             DB::commit();
 
             return response()->json([
@@ -89,21 +90,36 @@ class OrderController extends Controller
         }
     }
 
-    public function customerOrders($userId) {
+    public function customerOrders($userId)
+    {
 
-        $user = User::with(['orders' => function($query) {
+        $user = User::with(['orders' => function ($query) {
             $query->latest();
         }])->find($userId);
 
         return $user;
     }
 
-    public function totalSales() {
+    public function totalSales()
+    {
         $totalSales = DB::table('orders')
-        ->sum('total_price');
+            ->sum('total_price');
 
         return response()->json([
             'total_sales' => $totalSales,
         ]);
     }
+
+    // public function totalRevenue($productId)
+    // {
+    //     $cost = Product::with('')
+    // }
+
+    public function testing() {
+    $total_quantity = DB::table('order_items')->sum('quantity');
+
+    return response()->json([
+        'total' => $total_quantity
+    ]);
+}
 }

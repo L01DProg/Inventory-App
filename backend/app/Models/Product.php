@@ -15,6 +15,7 @@ class Product extends Model
         'product_name',
         'description',
         'price',
+        'cost',
         'expiration_date',
         'image'
     ];
@@ -32,5 +33,9 @@ class Product extends Model
     public function stocks()
     {
         return $this->hasOne(Stock::class);
+    }
+
+    public function order_items() {
+        return $this->hasMany(Order_item::class);
     }
 }

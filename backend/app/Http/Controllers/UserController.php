@@ -18,8 +18,14 @@ class UserController extends Controller
             'username' => 'required',
             'email' => 'required|email',
             'password' => 'required',
-            'role' => 'required'
+            'role' => 'required',
+            'image' => 'nullable|image|mimes:png,jpeg,gif,svg,webp|max:2048'
         ]);
+
+        $imagePath = null;
+        if($request->hasFile('image')){
+            $imagePath = $request->file('image')->store('images','public');
+        }
 
         $validatedData['password'] = Hash::make($validatedData['password']);
 

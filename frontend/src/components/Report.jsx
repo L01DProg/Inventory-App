@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 
 const Reports = () => {
   const [totalSales, setTotalSales] = useState("");
+  const [totalRevenue, setRevenue] = useState("");
   const [error, setError] = useState("");
   const navigate = useNavigate();
 
@@ -12,10 +13,9 @@ const Reports = () => {
       const authToken = localStorage.getItem("authToken");
 
       if (!authToken) {
-        // You cannot throw a new Error here. Instead, set the state and navigate.
         setError("Invalid or unauthenticated user.");
         navigate("/");
-        return; // It's important to return after navigating.
+        return;
       }
 
       try {
@@ -32,7 +32,7 @@ const Reports = () => {
         }
 
         const data = await response.json();
-        setTotalSales(data.total_sales); // Assuming the API returns a JSON object with a total_sales key.
+        setTotalSales(data.total_sales);
         console.log("Successfully fetched total sales.");
       } catch (err) {
         setError(err.message || "Server Error");
@@ -40,7 +40,37 @@ const Reports = () => {
     };
 
     fetchTotalSales();
-  }, [navigate]); // navigate is a dependency, so we include it in the dependency array.
+  }, [navigate]);
+
+  useEffect(() => {
+    const fetchRevenue = async () => {
+      const authToken = localStorage.getItem("authToken");
+      try {
+        const response = await fetch(
+          "http://127.0.0.1:8000/api/sales-revenue",
+          {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${authToken}`,
+            },
+          }
+        );
+
+        if (!response.ok) {
+          throw new Error("Error Fetching Revenue");
+        }
+
+        const data = await response.json();
+        setRevenue(data.revenue);
+        console.log("Successfully fetched total Revenue.");
+      } catch (err) {
+        setError(err.message || "Server Error");
+      }
+    };
+
+    fetchRevenue();
+  });
 
   const navigateDashboard = () => {
     navigate("/dashboard");
@@ -63,15 +93,14 @@ const Reports = () => {
           <h5>Total Sales</h5>
           <p className="text-center fw-semibold">
             <i className="fa fa-peso-sign"></i>
-            {totalSales || "Loading..."}
+            {totalSales || "0"}
           </p>
         </div>
 
-        <div className="card p-2 shadow-lg" style={{border:"none"}} >
+        <div className="card p-2 shadow-lg" style={{ border: "none" }}>
           <h5>Total Revenue</h5>
           <p className="text-center fw-semibold">
-            <i className="fa fa-peso-sign"></i>
-            120
+            <i className="fa fa-peso-sign"></i>{totalRevenue || ""}
           </p>
         </div>
       </div>

@@ -6,6 +6,7 @@ const AddItems = () => {
   const [category_name, setCategory] = useState("");
   const [description, setDescription] = useState("");
   const [price, setPrice] = useState("");
+  const [cost, setCost] = useState("");
   const [quantity, setQuantity] = useState("");
   const [expiration_date, setExpiration] = useState("");
   const [image, setImage] = useState(null);
@@ -15,7 +16,6 @@ const AddItems = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    
     setError("");
     const authToken = localStorage.getItem("authToken");
 
@@ -34,6 +34,7 @@ const AddItems = () => {
     formData.append("category_name", category_name);
     formData.append("description", description);
     formData.append("price", price);
+    formData.append("cost", cost);
     formData.append("quantity", quantity);
     formData.append("expiration_date", expiration_date);
     if (image) {
@@ -91,7 +92,10 @@ const AddItems = () => {
           <div className="modal-dialog modal-dialog-centered">
             <div className="modal-content">
               <div className="modal-header border-0 pb-0 justify-content-center">
-                <h5 className="modal-title fs-4 fw-bold text-success" id="successTitle">
+                <h5
+                  className="modal-title fs-4 fw-bold text-success"
+                  id="successTitle"
+                >
                   Success!
                 </h5>
               </div>
@@ -147,6 +151,16 @@ const AddItems = () => {
               value={price}
               onChange={(e) => setPrice(e.target.value)}
               placeholder="Price"
+              className="w-33 form-control text-center"
+              required
+            />
+
+            <input
+              type="number"
+              id="cost"
+              value={cost}
+              onChange={(e) => setCost(e.target.value)}
+              placeholder="Cost"
               className="w-33 form-control text-center"
               required
             />
